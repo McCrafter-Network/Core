@@ -1,0 +1,88 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+group 'me.lucky'
+version '0.5-SNAPSHOT'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+/// === Configuration === ///
+project.ext {
+    artifact = 'core'
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven {
+        name = "papermc"
+        url = uri("https://repo.papermc.io/repository/maven-public/")
+    }
+    maven {
+        name = 'FearNixx'
+        url = uri('https://nexus.fearnixx.de/repository/maven-public')
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ["src/main/java"]
+        }
+    }
+    api {
+        java {
+            srcDirs = ["src/api/java"]
+        }
+    }
+    bungee {
+        java {
+            srcDirs = ["src/bungee/java"]
+        }
+    }
+    spigot {
+        java {
+            srcDirs = ["src/spigot/java"]
+        }
+    }
+}
+
+dependencies {
+
+
+    // Spigot
+    bungeeCompileOnly("org.sql2o:sql2o:1.6.0")
+    spigotCompileOnly sourceSets.api.output
+    spigotCompileOnly 'org.github.paperspigot:paperspigot-api:1.8.8-R0.1-SNAPSHOT'
+
+    // Velocity
+    bungeeCompileOnly("org.sql2o:sql2o:1.6.0")
+    bungeeCompileOnly sourceSets.api.output
+    bungeeCompileOnly 'com.velocitypowered:velocity-api:3.1.1'
+    annotationProcessor("com.velocitypowered:velocity-api:3.1.1")
+
+    /// SQL2O
+    apiImplementation("org.sql2o:sql2o:1.6.0")
+
+    // NameOf
+    apiImplementation("de.mobiuscode.nameof:nameof:1.0")
+
+    // Lombok
+    apiImplementation 'org.projectlombok:lombok:1.18.20'
+    apiAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
+
+    //Confort
+    apiImplementation("de.mlessmann:confort:1.1.2-SNAPSHOT")
+    apiRuntimeOnly("org.antlr:antlr4:4.8")
+    apiRuntimeOnly("org.slf4j:slf4j-api:1.7.30")
+    apiRuntimeOnly("org.apache.logging.log4j:log4j-core:2.17.0")
+
+    // MySQL
+    apiRuntimeOnly("mysql:mysql-connector-java:6.0.6")
+}
+
+apply from: './artifacts.gradle'
+apply from: './publishing.gradle'

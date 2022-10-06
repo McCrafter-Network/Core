@@ -1,0 +1,29 @@
+publishing {
+    repositories {
+        mavenLocal()
+    }
+
+    publications {
+        api(MavenPublication) {
+            artifactId = "${project.ext.artifact}-api"
+            artifact apiJar
+            artifact apiSourcesJar {
+                classifier "sources"
+            }
+        }
+        bungee(MavenPublication) {
+            artifactId = "${project.ext.artifact}-bungee"
+            artifact bungeeJar
+            artifact bungeeSourcesJar {
+                classifier "sources"
+            }
+        }
+        spigot(MavenPublication) {
+            artifactId = "${project.ext.artifact}-spigot"
+            artifact spigotJar
+            artifact spigotSourcesJar {
+                classifier "sources"
+            }
+        }
+    }
+}

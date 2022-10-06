@@ -1,0 +1,112 @@
+
+compileJava() {
+    dependsOn 'compileApiJava'
+}
+
+task apiJar(type: Jar) {
+    baseName = 'core-api'
+    version = project.version
+
+    from sourceSets.api.output
+
+    dependsOn 'compileApiJava'
+}
+task apiSourcesJar(type: Jar) {
+    baseName = 'core-api'
+    version = project.version
+
+    from sourceSets.api.allJava
+
+    dependsOn 'compileApiJava'
+}
+
+task spigotJar(type: Jar) {
+    baseName = 'core-spigot'
+    version = project.version
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    from sourceSets.api.output
+    from sourceSets.spigot.output
+
+    from { configurations.apiRuntimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+
+
+    dependsOn 'compileSpigotJava'
+}
+task spigotSourcesJar(type: Jar) {
+    baseName = 'core-spigot'
+    version = project.version
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    from sourceSets.api.allJava
+    from sourceSets.spigot.allJava
+
+    from { configurations.apiRuntimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+
+    dependsOn 'compileSpigotJava'
+}
+
+task bungeeJar(type: Jar) {
+    baseName = 'core-bungee'
+    version = project.version
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from sourceSets.api.output
+    from sourceSets.bungee.output
+
+    from { configurations.apiRuntimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+
+    dependsOn 'compileBungeeJava'
+}
+task bungeeSourcesJar(type: Jar) {
+    baseName = 'core-bungee'
+    version = project.version
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    from sourceSets.api.allJava
+    from sourceSets.bungee.allJava
+
+    from { configurations.apiRuntimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+
+    dependsOn 'compileBungeeJava'
+}
+
+task allJar(type: Jar) {
+    baseName = 'core'
+    version = project.version
+
+    from sourceSets.api.output
+    from sourceSets.spigot.output
+    from sourceSets.bungee.output
+
+    dependsOn 'compileBungeeJava'
+}
+
+task allSourcesJar(type: Jar) {
+    baseName = 'core'
+    version = project.version
+
+    from sourceSets.api.allJava
+    from sourceSets.spigot.allJava
+    from sourceSets.bungee.allJava
+
+    dependsOn 'compileBungeeJava'
+}
+
+build {
+    dependsOn 'apiJar'
+    dependsOn 'apiSourcesJar'
+    dependsOn 'spigotJar'
+    dependsOn 'spigotSourcesJar'
+    dependsOn 'bungeeJar'
+    dependsOn 'bungeeSourcesJar'
+    dependsOn 'allJar'
+    dependsOn 'allSourcesJar'
+}
