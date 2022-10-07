@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'me.lucky'
-version '0.5-SNAPSHOT'
+version '0.6-SNAPSHOT'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -51,8 +51,6 @@ sourceSets {
 }
 
 dependencies {
-
-
     // Spigot
     bungeeCompileOnly("org.sql2o:sql2o:1.6.0")
     spigotCompileOnly sourceSets.api.output
@@ -70,6 +68,9 @@ dependencies {
     // NameOf
     apiImplementation("de.mobiuscode.nameof:nameof:1.0")
 
+    // Redis
+    apiImplementation('redis.clients:jedis:4.2.3')
+
     // Lombok
     apiImplementation 'org.projectlombok:lombok:1.18.20'
     apiAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
@@ -82,6 +83,9 @@ dependencies {
 
     // MySQL
     apiRuntimeOnly("mysql:mysql-connector-java:6.0.6")
+
+    // Guava
+    apiCompileOnly("com.google.guava:guava:18.0")
 }
 
 apply from: './artifacts.gradle'

@@ -2,12 +2,18 @@ package me.lucky.core.spigot;
 
 import me.lucky.core.api.ICore;
 import me.lucky.core.api.database.DatabaseManager;
+import me.lucky.core.api.signaling.SignalAgent;
 import me.lucky.core.api.utils.Config;
 import me.lucky.core.api.utils.CoreFactory;
 import me.lucky.core.api.utils.Messages;
 import me.lucky.core.api.utils.SysLog;
 import me.lucky.core.spigot.utils.SpigotMessages;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("unused")
 public class SpigotCore extends JavaPlugin implements ICore {
@@ -16,6 +22,8 @@ public class SpigotCore extends JavaPlugin implements ICore {
     private final SpigotMessages messages;
     private final SysLog sysLog;
     private final DatabaseManager databaseManager;
+    private final ExecutorService executorService;
+    private final SignalAgent signalAgent;
 
     public SpigotCore() {
         CoreFactory.registerInstance(this);
@@ -24,6 +32,8 @@ public class SpigotCore extends JavaPlugin implements ICore {
         this.messages = new SpigotMessages();
         this.sysLog = new SysLog();
         this.databaseManager = new DatabaseManager();
+        this.executorService = Executors.newFixedThreadPool(1);
+        this.signalAgent = new SignalAgent();
     }
 
     @Override
@@ -66,5 +76,15 @@ public class SpigotCore extends JavaPlugin implements ICore {
     @Override
     public DatabaseManager getDatabaseManager() {
         return this.databaseManager;
+    }
+
+    @Override
+    public SignalAgent getSignalAgent() {
+        return this.signalAgent;
+    }
+
+    @Override
+    public ExecutorService getExecutor() {
+        return this.executorService;
     }
 }

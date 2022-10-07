@@ -7,6 +7,7 @@ import com.velocitypowered.api.proxy.ProxyServer;
 import me.lucky.core.api.ICore;
 import me.lucky.core.api.database.DatabaseManager;
 import me.lucky.core.api.enumerations.config.DatabaseConfigEntry;
+import me.lucky.core.api.signaling.SignalAgent;
 import me.lucky.core.api.utils.Config;
 import me.lucky.core.api.utils.CoreFactory;
 import me.lucky.core.api.utils.Messages;
@@ -16,9 +17,12 @@ import me.lucky.core.bungee.events.ConnectionEvents;
 import me.lucky.core.bungee.utils.BungeeMessages;
 
 import javax.inject.Inject;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
-@Plugin(id = "bungeecore", name = "Mc Crafter TV - Core", version = "0.5-SNAPSHOT", authors = {"LuckyDev (Kimon Meier)"})
+@Plugin(id = "bungeecore", name = "Mc Crafter TV - Core", version = "0.6-SNAPSHOT", authors = {"LuckyDev (Kimon Meier)"})
 public class BungeeCore implements ICore {
     private final ProxyServer server;
     private final Logger logger;
@@ -26,6 +30,8 @@ public class BungeeCore implements ICore {
     private final Config config;
     private final SysLog sysLog;
     private final DatabaseManager dbManager;
+    private final ExecutorService executorService;
+    private final SignalAgent signalAgent;
 
 
     @Inject
@@ -39,6 +45,9 @@ public class BungeeCore implements ICore {
         this.config = new Config();
         this.sysLog = new SysLog();
         this.dbManager = new DatabaseManager();
+
+        this.executorService = Executors.newFixedThreadPool(4);
+        this.signalAgent = new SignalAgent();
     }
 
     @Subscribe
@@ -107,5 +116,15 @@ public class BungeeCore implements ICore {
     @Override
     public DatabaseManager getDatabaseManager() {
         return this.dbManager;
+    }
+
+    @Override
+    public SignalAgent getSignalAgent() {
+        return this.signalAgent;
+    }
+
+    @Override
+    public ExecutorService getExecutor() {
+        return this.executorService;
     }
 }
