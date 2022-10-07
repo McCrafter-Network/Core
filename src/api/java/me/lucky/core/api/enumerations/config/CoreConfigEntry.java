@@ -4,7 +4,8 @@ import me.lucky.core.api.utils.IEnumNested;
 
 public enum CoreConfigEntry implements IEnumNested {
     DATABASE("DATABASE"),
-    MESSAGES("MSG");
+    MESSAGES("MSG"),
+    REDIS("REDIS");
 
     private final String key;
 
