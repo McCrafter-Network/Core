@@ -36,7 +36,7 @@ public class SysLog {
 
     public void LogError(String message) {
         String className = Thread.currentThread().getStackTrace()[2].getClassName();
-        this.core.getLogger().log(Level.FINE, this.config.getEntryAsString(MessageConfigEntry.LOGGER_PREFIX) + className + " || " + message);
+        this.core.getLogger().log(Level.SEVERE, this.config.getEntryAsString(MessageConfigEntry.LOGGER_PREFIX) + className + " || " + message);
     }
 
     public void LogException(String message, Exception ex) {

@@ -1,19 +1,21 @@
 package me.lucky.core.api.signaling.signals;
 
 import me.lucky.core.api.signaling.SignalType;
-import redis.clients.jedis.JedisPubSub;
 
 import java.io.Serializable;
 
-public abstract class BaseSignal<T> extends JedisPubSub {
+public abstract class BaseSignal<T> implements Serializable {
 
-    private final SignalType signalType;
-    private final String target;
-    private final SignalTargetType targetType;
+    private SignalType signalType;
+    private String target;
 
-    public BaseSignal(SignalType signalType, SignalTargetType targetType, String target) {
+    @Deprecated
+    public BaseSignal() {
+
+    }
+
+    public BaseSignal(SignalType signalType, String target) {
         this.signalType = signalType;
-        this.targetType = targetType;
         this.target = target;
     }
 
@@ -25,7 +27,11 @@ public abstract class BaseSignal<T> extends JedisPubSub {
         return target;
     }
 
-    public SignalTargetType getTargetType() {
-        return targetType;
+    public void setSignalType(SignalType signalType) {
+        this.signalType = signalType;
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
     }
 }

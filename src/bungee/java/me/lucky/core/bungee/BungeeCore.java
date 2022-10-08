@@ -8,16 +8,14 @@ import me.lucky.core.api.ICore;
 import me.lucky.core.api.database.DatabaseManager;
 import me.lucky.core.api.enumerations.config.DatabaseConfigEntry;
 import me.lucky.core.api.signaling.SignalAgent;
-import me.lucky.core.api.utils.Config;
-import me.lucky.core.api.utils.CoreFactory;
-import me.lucky.core.api.utils.Messages;
-import me.lucky.core.api.utils.SysLog;
+import me.lucky.core.api.signaling.SignalType;
+import me.lucky.core.api.utils.*;
 import me.lucky.core.bungee.commands.ReloadCommand;
 import me.lucky.core.bungee.events.ConnectionEvents;
+import me.lucky.core.bungee.signaling.VersionListener;
 import me.lucky.core.bungee.utils.BungeeMessages;
 
 import javax.inject.Inject;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
@@ -46,7 +44,7 @@ public class BungeeCore implements ICore {
         this.sysLog = new SysLog();
         this.dbManager = new DatabaseManager();
 
-        this.executorService = Executors.newFixedThreadPool(4);
+        this.executorService = Executors.newCachedThreadPool();
         this.signalAgent = new SignalAgent();
     }
 
@@ -74,6 +72,8 @@ public class BungeeCore implements ICore {
             this.sysLog.LogInformation("Die Datenbankverbindung ist deaktiviert!");
         }
 
+        this.signalAgent.initConnection();
+
         this.sysLog.LogDebug("Registering the Event listener");
         this.registerListener();
         this.sysLog.LogDebug("Registered the Event listener");
@@ -81,6 +81,10 @@ public class BungeeCore implements ICore {
         this.sysLog.LogDebug("Registering the Commands");
         this.registerCommands();
         this.sysLog.LogDebug("Registered the Commands");
+
+        this.sysLog.LogDebug("Die Signale zwischen Bungee und Spigot werden registriert");
+        this.registerSignals();
+        this.sysLog.LogDebug("Die Signale wurden registriert!");
 
         this.sysLog.LogInformation("Successfully loaded the Core");
     }
@@ -91,6 +95,10 @@ public class BungeeCore implements ICore {
 
     private void registerCommands() {
         new ReloadCommand().registerCommand(this.server);
+    }
+
+    private void registerSignals() {
+        this.signalAgent.registerListener(SignalType.CHECK_VERSION, new VersionListener());
     }
 
     @Override

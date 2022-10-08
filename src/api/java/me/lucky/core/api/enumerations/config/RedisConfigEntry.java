@@ -4,10 +4,7 @@ import me.lucky.core.api.utils.IEnumNested;
 
 public enum RedisConfigEntry implements IEnumNested {
     HOST("Host", CoreConfigEntry.REDIS),
-    PORT("Port", CoreConfigEntry.REDIS),
-    USER("Username", CoreConfigEntry.REDIS),
-    PASSWORD("Password", CoreConfigEntry.REDIS),
-    ENABLED("Enabled", CoreConfigEntry.REDIS);
+    PORT("Port", CoreConfigEntry.REDIS);
 
     private final String key;
     private final IEnumNested parent;

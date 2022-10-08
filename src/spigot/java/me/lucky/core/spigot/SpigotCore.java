@@ -3,17 +3,14 @@ package me.lucky.core.spigot;
 import me.lucky.core.api.ICore;
 import me.lucky.core.api.database.DatabaseManager;
 import me.lucky.core.api.signaling.SignalAgent;
-import me.lucky.core.api.utils.Config;
-import me.lucky.core.api.utils.CoreFactory;
-import me.lucky.core.api.utils.Messages;
-import me.lucky.core.api.utils.SysLog;
+import me.lucky.core.api.signaling.SignalType;
+import me.lucky.core.api.utils.*;
+import me.lucky.core.api.utils.CoreVersion;
+import me.lucky.core.api.signaling.signals.VersionSignal;
 import me.lucky.core.spigot.utils.SpigotMessages;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 @SuppressWarnings("unused")
 public class SpigotCore extends JavaPlugin implements ICore {
@@ -32,7 +29,8 @@ public class SpigotCore extends JavaPlugin implements ICore {
         this.messages = new SpigotMessages();
         this.sysLog = new SysLog();
         this.databaseManager = new DatabaseManager();
-        this.executorService = Executors.newFixedThreadPool(1);
+
+        this.executorService = Executors.newCachedThreadPool();
         this.signalAgent = new SignalAgent();
     }
 
@@ -48,6 +46,12 @@ public class SpigotCore extends JavaPlugin implements ICore {
         this.messages.refreshMessages();
         this.sysLog.LogDebug("The messages we're loaded");
 
+        this.signalAgent.initConnection();
+
+        this.sysLog.LogDebug("Die Nachrichten zwischen Bungee und Spigot werden registriert");
+        this.registerSignal();
+        this.sysLog.LogDebug("Die Nachrichten zwischen Bungee und Spigot wurden registriert");
+
         this.sysLog.LogInformation("Successfully loaded the Core");
     }
 
@@ -55,7 +59,24 @@ public class SpigotCore extends JavaPlugin implements ICore {
     public void onDisable() {
         this.sysLog.LogInformation("Starting to unload the Core");
 
+        this.signalAgent.disableAgent();
+
         this.sysLog.LogInformation("Successfully unloaded the Core");
+    }
+
+    private void registerSignal() {
+        VersionSignal signal = new VersionSignal(SignalType.CHECK_VERSION, "");
+        signal.setVersion(CoreVersion.VERSION);
+
+        this.signalAgent.sendSignal(signal, (version) -> {
+            this.sysLog.LogDebug("Current Version: " + CoreVersion.VERSION);
+            this.sysLog.LogDebug("Bungee Version: " + version.getVersion());
+            if(!version.getVersion().equals(CoreVersion.VERSION)) {
+                this.sysLog.LogError("Die Version des Cores stimmt nicht mit der Version des Proxys überein." +
+                        "Aus diesem Grund wird die Kommunikation mit dem Proxy deaktiviert!");
+                this.signalAgent.disableAgent();
+            }
+        });
     }
 
     @Override

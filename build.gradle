@@ -28,9 +28,9 @@ repositories {
 }
 
 sourceSets {
-    main {
+    shared {
         java {
-            srcDirs = ["src/main/java"]
+            srcDirs = ["src/shared/java"]
         }
     }
     api {
@@ -51,6 +51,7 @@ sourceSets {
 }
 
 dependencies {
+
     // Spigot
     bungeeCompileOnly("org.sql2o:sql2o:1.6.0")
     spigotCompileOnly sourceSets.api.output
@@ -70,6 +71,8 @@ dependencies {
 
     // Redis
     apiImplementation('redis.clients:jedis:4.2.3')
+    spigotCompileOnly('redis.clients:jedis:4.2.3')
+    bungeeCompileOnly('redis.clients:jedis:4.2.3')
 
     // Lombok
     apiImplementation 'org.projectlombok:lombok:1.18.20'

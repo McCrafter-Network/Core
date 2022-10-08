@@ -66,8 +66,7 @@ public class Config {
         Object object = config.getRoot().getNode(this.getNodeByEnum(node)).getValue();
         if (object instanceof String) {
             return (String)object;
-        }
-        if (object instanceof Integer || object instanceof Double || object instanceof Float) {
+        } else if (object instanceof Integer || object instanceof Double || object instanceof Float) {
             return object.toString();
         }
         return "";
@@ -81,8 +80,7 @@ public class Config {
         Object object = config.getRoot().getNode(this.getNodeByEnum(node)).getValue();
         if (object instanceof Integer) {
             return (Integer)object;
-        }
-        if (object instanceof String) {
+        } else if (object instanceof String) {
             return Integer.parseInt((String)object);
         }
         if (object instanceof Double || object instanceof Float) {
