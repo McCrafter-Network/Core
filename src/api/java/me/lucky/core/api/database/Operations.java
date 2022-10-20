@@ -2,7 +2,6 @@ package me.lucky.core.api.database;
 
 import me.lucky.core.api.database.annotations.DataColumn;
 import me.lucky.core.api.database.annotations.DataTable;
-import me.lucky.core.api.database.entities.Player;
 import me.lucky.core.api.utils.CoreFactory;
 import me.lucky.core.api.utils.SysLog;
 import org.sql2o.Connection;
@@ -11,10 +10,8 @@ import org.sql2o.data.Table;
 
 import java.lang.annotation.AnnotationFormatError;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
-import java.util.function.BiConsumer;
 
 public class Operations {
     public static <T> int Insert(Connection openConnection, T dbobject) throws IllegalAccessException {

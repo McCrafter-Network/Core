@@ -25,8 +25,8 @@ public abstract class Messages {
         this.core = CoreFactory.getRunningCore();
     }
 
-    public String getMessage(MessageTypes path, String ... arguments) {
-        String message = this.messages.getOrDefault(path, "");
+    public String getMessage(IEnumKeyType path, String ... arguments) {
+        String message = this.messages.getOrDefault(path.getKey(), "");
         if (!message.equals("") && arguments.length > 0) {
             for (int i = 0; i <= arguments.length - 1; ++i) {
                 message = message.replace("{" + i + "}", arguments[i]);
@@ -35,11 +35,11 @@ public abstract class Messages {
         return message;
     }
 
-    public String getIngameMessage(MessageTypes path, String ... arguments) {
+    public String getIngameMessage(IEnumKeyType path, String ... arguments) {
         return this.core.getCustomConfig().getEntryAsString(MessageConfigEntry.INGAME_PREFIX) + this.getMessage(path, arguments);
     }
 
-    public String getLoggerMessage(MessageTypes path, String ... arguments){
+    public String getLoggerMessage(IEnumKeyType path, String ... arguments){
         return this.core.getCustomConfig().getEntryAsString(MessageConfigEntry.LOGGER_PREFIX) + this.getMessage(path, arguments);
     }
 

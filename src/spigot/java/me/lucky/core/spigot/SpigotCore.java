@@ -24,6 +24,7 @@ public class SpigotCore extends JavaPlugin implements ICore {
 
     public SpigotCore() {
         CoreFactory.registerInstance(this);
+        CoreFactory.registerServer(this.getServer());
 
         this.config = new Config();
         this.messages = new SpigotMessages();

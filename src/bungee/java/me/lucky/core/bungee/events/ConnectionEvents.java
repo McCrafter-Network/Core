@@ -2,18 +2,13 @@ package me.lucky.core.bungee.events;
 
 import com.velocitypowered.api.event.Subscribe;
 import me.lucky.core.api.ICore;
-import me.lucky.core.api.database.DBParameter;
 import me.lucky.core.api.database.Operations;
 import me.lucky.core.api.database.WhereParameter;
-import me.lucky.core.api.database.entities.Player;
+import me.lucky.core.api.database.entities.DBPlayer;
 import me.lucky.core.api.utils.CoreFactory;
-import me.lucky.core.api.utils.SysLog;
 import org.sql2o.Connection;
 
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.Date;
-import java.util.List;
 
 public class ConnectionEvents {
 
@@ -27,13 +22,13 @@ public class ConnectionEvents {
     public void onPlayerJoin(com.velocitypowered.api.event.connection.LoginEvent loginEvent) {
         try (Connection connection = this.core.getDatabaseManager().getOpenConn()) {
             com.velocitypowered.api.proxy.Player eventPlayer = loginEvent.getPlayer();
-            Player player = Operations.ExecuteScalarQuery(connection, Player.class, new WhereParameter<>(Player.class, Player::getUuid, eventPlayer.getUniqueId().toString()));;
+            DBPlayer player = Operations.ExecuteScalarQuery(connection, DBPlayer.class, new WhereParameter<>(DBPlayer.class, DBPlayer::getUuid, eventPlayer.getUniqueId().toString()));;
 
             boolean playerWasEmpty = false;
             if(player == null) {
                 playerWasEmpty = true;
                 this.core.getSysLog().LogDebug("Players empty");
-                player = new Player();
+                player = new DBPlayer();
                 player.setUuid(eventPlayer.getUniqueId().toString());
                 player.setFirstJoinedDate(LocalDateTime.now());
             }

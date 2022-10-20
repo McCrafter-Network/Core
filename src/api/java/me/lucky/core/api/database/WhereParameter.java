@@ -2,13 +2,8 @@ package me.lucky.core.api.database;
 
 import de.mobiuscode.nameof.Name;
 import me.lucky.core.api.database.annotations.DataColumn;
-import me.lucky.core.api.database.entities.Player;
-import me.lucky.core.api.utils.CoreFactory;
-import sun.text.resources.ext.FormatData_ga;
 
-import javax.xml.crypto.Data;
 import java.lang.reflect.Field;
-import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 public class WhereParameter<Y, T> {
