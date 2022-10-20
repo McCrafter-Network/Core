@@ -176,6 +176,15 @@ public class Operations {
         }
     }
 
+    public static <T> List<T> ListAll(Connection connection, Class<T> dbObject) {
+        if (!dbObject.isAnnotationPresent(DataTable.class)) {
+            throw new AnnotationFormatError("Die Annotation DataTable wirde ben\u00c3\u00b6tigt");
+        }
+        String dataTable = dbObject.getAnnotation(DataTable.class).Name();
+
+        return Operations.ExecuteQuery(connection, dbObject, "SELECT * FROM " + dataTable);
+    }
+
     private static Object getValueFromField(Field field, Object instance) {
         try {
             if(field.getModifiers() == Modifier.PUBLIC) {

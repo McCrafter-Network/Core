@@ -71,5 +71,5 @@ public abstract class Messages {
         sysLog.LogDebug("Die Daten wurden neugeladen!");
     }
 
-    public abstract void sendNoPermissionMessage(IPlayer player);
+    public abstract void sendNoPermissionMessage(Object player);
 }

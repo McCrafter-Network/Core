@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
-@Plugin(id = "bungeecore", name = "Mc Crafter TV - Core", version = "0.7-SNAPSHOT", authors = {"LuckyDev (Kimon Meier)"})
+@Plugin(id = "bungeecore", name = "Mc Crafter TV - Core", version = "0.9-SNAPSHOT", authors = {"LuckyDev (Kimon Meier)"})
 public class BungeeCore implements ICore {
     private final ProxyServer server;
     private final Logger logger;

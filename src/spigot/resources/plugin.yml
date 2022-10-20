@@ -1,6 +1,6 @@
 name: SpigotCore
 main: me.lucky.core.spigot.SpigotCore
-version: 0.7-SNAPSHOT
+version: 0.9-SNAPSHOT
 database: true
 authors:
   - LuckyDev (Kimon Meier)
