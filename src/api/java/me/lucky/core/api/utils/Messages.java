@@ -26,7 +26,12 @@ public abstract class Messages {
     }
 
     public String getMessage(IEnumKeyType path, String ... arguments) {
-        String message = this.messages.getOrDefault(path.getKey(), "");
+        return this.getMessage(path.getKey(), arguments);
+    }
+
+    @Deprecated()
+    public String getMessage(String path, String... arguments) {
+        String message = this.messages.getOrDefault(path, path);
         if (!message.equals("") && arguments.length > 0) {
             for (int i = 0; i <= arguments.length - 1; ++i) {
                 message = message.replace("{" + i + "}", arguments[i]);
@@ -36,6 +41,11 @@ public abstract class Messages {
     }
 
     public String getIngameMessage(IEnumKeyType path, String ... arguments) {
+        return this.getIngameMessage(path.getKey(), arguments);
+    }
+
+    @Deprecated
+    public String getIngameMessage(String path, String ... arguments) {
         return this.core.getCustomConfig().getEntryAsString(MessageConfigEntry.INGAME_PREFIX) + this.getMessage(path, arguments);
     }
 

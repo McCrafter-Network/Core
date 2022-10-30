@@ -8,7 +8,7 @@ import me.lucky.core.api.database.annotations.DataTable;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-@DataTable(Name = "Player")
+@DataTable(Name = "player")
 public class DBPlayer {
 
     @DataColumn(Key = "ID", IsAuto = true)
